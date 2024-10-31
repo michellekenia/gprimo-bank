@@ -1,11 +1,13 @@
-import { IsNumber, IsPositive } from "class-validator"
+import { IsNotEmpty, IsNumber, Min } from "class-validator"
 
 export class CreateAccountDto {
+    @IsNotEmpty()
     @IsNumber()
     number: number 
 
+    @IsNotEmpty()
     @IsNumber({maxDecimalPlaces: 2})
-    @IsPositive()
+    @Min(0) 
     balance: number
 
 }
