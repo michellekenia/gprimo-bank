@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateAccountDto } from './create-account.dto';
+import { IsNumber, IsPositive } from "class-validator";
 
-export class UpdateAccountDto extends PartialType(CreateAccountDto) {}
+export class UpdateAccountDto {
+    
+    @IsNumber({maxDecimalPlaces: 2})
+    @IsPositive()
+    balance?: number
+
+}
