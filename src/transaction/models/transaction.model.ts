@@ -6,6 +6,7 @@ export class Transaction {
   createdAt: Date;
   type: TransactionType;
   amount: number;
+  accountNumber: number;
   fromAccount?: number;
   toAccount?: number;
   accountId: number;
