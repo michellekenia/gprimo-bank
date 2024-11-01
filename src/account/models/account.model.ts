@@ -6,5 +6,9 @@ export class Account {
     balance: number;
     createdAt: Date;
     transactions?: Transaction []
-    
+
+    constructor(partial?: Partial<Account>) {
+    Object.assign(this, partial);
+  }
+  
 }
