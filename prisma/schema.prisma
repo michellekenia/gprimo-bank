@@ -29,5 +29,6 @@ model Transaction {
   toAccount    Int?
   createdAt    DateTime       @default(now())
   accountId    Int
+  accountNumber     Int
   Account      Account        @relation(fields: [accountId], references: [id])
 }
