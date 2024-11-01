@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { AccountRepository } from './account.repository';
+import { CreateAccountDto } from './dto/create-account.dto';
+import { Account } from './models/account.model';
 
 @Injectable()
 export class AccountService {
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+  constructor(private readonly accountRepository: AccountRepository) {}
+
+
+  async create(data: CreateAccountDto): Promise <Account> {
+    return this.accountRepository.create(data)
   }
 
-  findAll() {
-    return `This action returns all account`;
+  async findAll(): Promise <Account[]> {
+    return this.accountRepository.findAll()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  async findByNumber (number: number): Promise <Account> {
+    return this.accountRepository.findByNumber(number)
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  async updateByNumber (number: number, data: UpdateAccountDto): Promise <Account> {
+    return this.accountRepository.updateByNumber(number, data)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async deleteByNumber(number: number): Promise <Account> {
+    return this.accountRepository.deleteByNumber(number)
   }
 }

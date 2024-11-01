@@ -2,33 +2,34 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { Account } from './models/account.model';
 
-@Controller('account')
+@Controller('accounts')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
   @Post()
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountService.create(createAccountDto);
+  async create(@Body() data: CreateAccountDto): Promise<Account> {
+    return this.accountService.create(data)
   }
 
   @Get()
-  findAll() {
-    return this.accountService.findAll();
+  async findAll(): Promise<Account[]> {
+    return this.accountService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.accountService.findOne(+id);
+  @Get(':number')
+  async findByNumber(@Param('number') number: number): Promise<Account> {
+    return this.accountService.findByNumber(Number(number))
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountService.update(+id, updateAccountDto);
+  @Patch(':number')
+  async update(@Param('number') number: number, @Body() data: UpdateAccountDto): Promise<Account> {
+    return this.accountService.updateByNumber(Number(number), data)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.accountService.remove(+id);
+  @Delete(':number')
+  async remove(@Param('number') number: number): Promise <Account> {
+    return this.accountService.deleteByNumber(Number(number))
   }
 }
