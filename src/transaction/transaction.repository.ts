@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Account } from "src/account/models/account.model";
 import { PrismaService } from "src/adapters/prisma.service";
 import { TransactionDto } from "./dto/transaction.dto";
-import { Transaction } from "@prisma/client";
+import { Transaction, TransactionType } from "@prisma/client";
+import { TransferDto } from "./dto/transfer.dto";
 
 @Injectable()
 export class TransactionsRepository {
@@ -45,7 +46,7 @@ export class TransactionsRepository {
         const account = await this.findAccountByNumber(data.accountNumber)
 
         if(account.balance < data.amount) {
-            throw new Error ("Saldo Insuficiente para saque.")
+            throw new BadRequestException("Saldo Insuficiente para saque.")
 
         }
 
@@ -53,7 +54,7 @@ export class TransactionsRepository {
             
             this.prismaService.account.update({
                 where: { number: data.accountNumber },
-                data: { balance: { increment: data.amount }}
+                data: { balance: { decrement: data.amount }}
             }),
 
             this.prismaService.transaction.create({
@@ -61,6 +62,41 @@ export class TransactionsRepository {
                     type: 'WITHDRAW', 
                     amount: data.amount, 
                     Account: { connect: { number: data.accountNumber } }
+                }
+            })
+
+        ])
+        
+        return transaction
+    }
+
+    async transfer(data: TransferDto): Promise<Transaction> {
+        const fromAccount = await this.findAccountByNumber(data.fromAccountNumber)
+        const toAccount = await this.findAccountByNumber(data.toAccountNumber)
+
+        if(fromAccount.balance < data.amount) {
+            throw new BadRequestException("Saldo Insuficiente para transferência.")
+        }
+
+        const [, , transaction] = await this.prismaService.$transaction([
+            
+            this.prismaService.account.update({
+                where: { id: fromAccount.id },
+                data: { balance: { decrement: data.amount }}
+            }),
+
+            this.prismaService.account.update({
+                where: { id: toAccount.id },
+                data: { balance: { increment: data.amount }}
+            }),
+
+            this.prismaService.transaction.create({
+                data: {
+                    type: 'TRANSFER', 
+                    amount: data.amount, 
+                    fromAccountNumber: data.fromAccountNumber,
+                    toAccountNumber: data.toAccountNumber,
+                    Account: { connect: { number: data.fromAccountNumber } },
                 }
             })
 

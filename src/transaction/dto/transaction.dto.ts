@@ -1,9 +1,5 @@
 import { TransactionType } from "@prisma/client";
-import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, Min } from "class-validator";
-
-
-export class CreateTransactionDto {}
-
+import { IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min } from "class-validator";
 
 export class TransactionDto {
     @IsEnum(TransactionType)
@@ -16,15 +12,5 @@ export class TransactionDto {
     @IsInt()
     @Min(1, { message: 'O número da conta deve ser positivo.' })
     accountNumber: number
-
-    @IsInt()
-    @IsOptional()
-    @Min(1, { message: 'O número da conta deve ser positivo.' })
-    fromAccountId?: number;
-  
-    @IsInt()
-    @IsOptional()
-    @Min(1, { message: 'O número da conta deve ser positivo.' })
-    toAccountId?: number;
   }
   
