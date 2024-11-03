@@ -40,5 +40,33 @@ export class TransactionsRepository {
         
         return transaction
     }
+
+    async withdraw(data: TransactionDto): Promise<Transaction> {
+        const account = await this.findAccountByNumber(data.accountNumber)
+
+        if(account.balance < data.amount) {
+            throw new Error ("Saldo Insuficiente para saque.")
+
+        }
+
+        const [, transaction] = await this.prismaService.$transaction([
+            
+            this.prismaService.account.update({
+                where: { number: data.accountNumber },
+                data: { balance: { increment: data.amount }}
+            }),
+
+            this.prismaService.transaction.create({
+                data: {
+                    type: 'WITHDRAW', 
+                    amount: data.amount, 
+                    Account: { connect: { number: data.accountNumber } }
+                }
+            })
+
+        ])
+        
+        return transaction
+    }
     
 }

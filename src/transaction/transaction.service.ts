@@ -13,4 +13,8 @@ export class TransactionService {
     return this.transactionRepository.deposit(data)
   }
 
+  async withdraw(data: TransactionDto): Promise<Transaction> {
+    return this.transactionRepository.withdraw(data)
+  }
+
 }

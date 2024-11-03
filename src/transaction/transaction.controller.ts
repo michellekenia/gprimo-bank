@@ -8,22 +8,13 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Post('deposit')
-  async create(@Body() data: TransactionDto): Promise<Transaction> {
+  async deposit(@Body() data: TransactionDto): Promise<Transaction> {
     return this.transactionService.deposit(data)
   }
 
-  @Get()
-  findAll() {
-    
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Post('withdraw')
+  async withdraw(@Body() data: TransactionDto): Promise<Transaction> {
+    return this.transactionService.withdraw(data)
   }
 
 }
