@@ -1,4 +1,5 @@
-import { TransactionType } from "../enums/transaction-type.enum";
+import { TransactionType } from "@prisma/client";
+
 
 
 export class Transaction {
@@ -6,7 +7,6 @@ export class Transaction {
   createdAt: Date;
   type: TransactionType;
   amount: number;
-  accountNumber: number;
   fromAccount?: number;
   toAccount?: number;
   accountId: number;

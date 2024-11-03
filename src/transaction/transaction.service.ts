@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common'
 
 import { TransactionDto } from './dto/transaction.dto';
-import { Transaction } from './models/transaction.model';
+
 import { TransactionsRepository } from './transaction.repository';
+import { Transaction } from '@prisma/client';
+
 
 @Injectable()
 export class TransactionService {
