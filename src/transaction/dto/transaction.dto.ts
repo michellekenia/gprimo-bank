@@ -10,7 +10,7 @@ export class TransactionDto {
     type: TransactionType;
   
     @IsNumber({maxDecimalPlaces: 2})
-    @IsPositive()
+    @IsPositive({message: 'O saldo deve ser maior do que zero.'})
     amount: number;
   
     @IsInt()
