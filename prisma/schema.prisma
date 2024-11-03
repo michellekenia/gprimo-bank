@@ -14,11 +14,11 @@ enum TransactionType {
 }
 
 model Account {
-  id        Int          @id @default(autoincrement())
-  number    Int          @unique
+  id        Int              @id @default(autoincrement())
+  number    Int              @unique
   balance   Float
-  createdAt DateTime     @default(now())
-  transactions Transaction[]
+  createdAt DateTime         @default(now())
+  transactions Transaction[] @relation("AccountTransactions")
 }
 
 model Transaction {
@@ -29,6 +29,5 @@ model Transaction {
   toAccount    Int?
   createdAt    DateTime       @default(now())
   accountId    Int
-  accountNumber     Int
-  Account      Account        @relation(fields: [accountId], references: [id])
+  Account      Account        @relation("AccountTransactions", fields: [accountId], references: [id])
 }
