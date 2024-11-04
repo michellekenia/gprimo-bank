@@ -14,20 +14,20 @@ enum TransactionType {
 }
 
 model Account {
-  id        Int          @id @default(autoincrement())
-  number    Int          @unique
-  balance   Float
-  createdAt DateTime     @default(now())
-  transactions Transaction[]
+  id          Int            @id @default(autoincrement())
+  number      Int            @unique
+  balance     Float
+  createdAt   DateTime       @default(now())
+  transactions Transaction[] @relation("AccountTransactions")
 }
 
 model Transaction {
-  id           Int            @id @default(autoincrement())
-  type         TransactionType
-  amount       Float
-  fromAccount  Int?
-  toAccount    Int?
-  createdAt    DateTime       @default(now())
-  accountId    Int
-  Account      Account        @relation(fields: [accountId], references: [id])
+  id                Int             @id @default(autoincrement())
+  type              TransactionType
+  amount            Float
+  createdAt         DateTime        @default(now())
+  fromAccountNumber Int?
+  toAccountNumber   Int?
+  accountId         Int
+  Account           Account         @relation("AccountTransactions", fields: [accountId], references: [id])
 }

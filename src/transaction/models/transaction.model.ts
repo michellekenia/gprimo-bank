@@ -1,4 +1,5 @@
-import { TransactionType } from "../enuns/transaction-type.enum";
+import { TransactionType } from "@prisma/client";
+
 
 
 export class Transaction {
